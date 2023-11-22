@@ -1,0 +1,45 @@
+import nltk
+from nltk.stem import PorterStemmer
+import tkinter as tk
+from tkinter import Label, Entry, Button, Text, Scrollbar, END
+
+nltk.download('punkt')
+
+def english_stemmer(text):
+    stemmer = PorterStemmer()
+    words = nltk.word_tokenize(text)
+    stemmed_words = [stemmer.stem(word) for word in words]
+    stemmed_text = ' '.join(stemmed_words)
+    return stemmed_text
+
+def stem_text():
+    input_text = input_text_entry.get("1.0", "end-1c")
+    stemmed_text = english_stemmer(input_text)
+    output_text.delete("1.0", "end")
+    output_text.insert("1.0", stemmed_text)
+
+# Create a tkinter window
+root = tk.Tk()
+root.title("Rule Based English Stemmer")
+
+# Create input and output text widgets
+input_text_label = Label(root, text="Input Text:")
+input_text_label.pack()
+input_text_entry = Text(root, height=5, width=40)
+input_text_entry.pack()
+
+output_text_label = Label(root, text="Stemmed Text:")
+output_text_label.pack()
+output_text = Text(root, height=5, width=40)
+output_text.pack()
+
+scrollbar = Scrollbar(root)
+scrollbar.pack(side="right", fill="y")
+output_text.config(yscrollcommand=scrollbar.set)
+scrollbar.config(command=output_text.yview)
+
+# Create a button to trigger stemming
+stem_button = Button(root, text="Stem Text", command=stem_text)
+stem_button.pack()
+
+root.mainloop()
